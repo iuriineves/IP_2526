@@ -8,6 +8,7 @@ void main() {
     int length = input.nextInt();
     int blackTile = input.nextInt();
     int grayTile = input.nextInt();
+    input.close();
 
     /*
     measure how many groups of black + gray tiles fit in both axes and subtract
