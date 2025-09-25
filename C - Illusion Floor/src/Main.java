@@ -3,7 +3,7 @@ import java.util.Scanner;
 void main() {
     // get user input
     Scanner input = new Scanner(System.in);
-
+    
     int width = input.nextInt();
     int length = input.nextInt();
     int blackTile = input.nextInt();

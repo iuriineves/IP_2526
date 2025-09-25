@@ -1,7 +1,15 @@
 import java.util.Scanner;
 
+final String ALIBI_MSG = "Com alibi";
+final String NO_ALIBI_MSG = "Sem alibi";
+
 boolean fitsTimeFrame(int crimeStart, int crimeEnd, int alibiStart, int alibiEnd) {
     return (crimeStart >= alibiStart) && (crimeEnd <= alibiEnd);
+}
+
+String getAlibiMessage(boolean hasAlibi) {
+    if (hasAlibi) return ALIBI_MSG;
+    return NO_ALIBI_MSG;
 }
 
 boolean hasAlibi(Scanner input) {
@@ -10,15 +18,13 @@ boolean hasAlibi(Scanner input) {
     input.nextLine();
     int alibiStart = input.nextInt();
     int alibiEnd = input.nextInt();
+    input.nextLine();
     return fitsTimeFrame(crimeStart, crimeEnd, alibiStart, alibiEnd);
 }
 
 void announceAlibi(boolean hasAlibi) {
-    if (hasAlibi) {
-        System.out.println("Com alibi");
-    } else {
-        System.out.println("Sem alibi");
-    }
+    final String MSG = getAlibiMessage(hasAlibi);
+    System.out.println(MSG);
 }
 
 void main() {
