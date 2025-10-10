@@ -1,34 +1,44 @@
 import java.util.Scanner;
 
+final int MINS_PER_HOUR = 60;
+
+final String FOUND_MSG = "Encontram-se";
+final String NOT_FOUND_MSG = "Desencontram-se";
+
+int timeToMinutes(int hours, int mins) {
+    return mins + hours * MINS_PER_HOUR;
+}
+
 // generic method to check if a certain time is within a set time range
-boolean isWithinTimeRange(int startHour, int startMin, int endHour, int endMin, int targetHour, int targetMin) {
-    boolean isAboveLowerLimit = (startHour < targetHour) || (startHour == targetHour && startMin <= targetMin);
-    boolean isBelowUpperLimit = (endHour > targetHour) || (endHour == targetHour && endMin >= targetMin);
-    return isAboveLowerLimit && isBelowUpperLimit;
+boolean isWithinTimeRange(int start, int end, int target) {
+    return start <= target && target <= end;
+}
+
+String getMessage(boolean didFindEachOther) {
+    if (didFindEachOther) return FOUND_MSG;
+    return NOT_FOUND_MSG;
+}
+
+int readTime(Scanner input) {
+    int hours = input.nextInt();
+    int mins = input.nextInt();
+    input.nextLine();
+    return timeToMinutes(hours, mins);
 }
 
 // get user input and return if it is within the time range
 boolean findEachOther(Scanner input) {
-    int startHour = input.nextInt();
-    int startMin = input.nextInt();
-    input.nextLine();
-    int endHour = input.nextInt();
-    int endMin = input.nextInt();
-    input.nextLine();
-    int targetHour = input.nextInt();
-    int targetMin = input.nextInt();
-    input.nextLine();
+    int startTime = readTime(input);
+    int endTime = readTime(input);
+    int targetTime = readTime(input);
 
-    return isWithinTimeRange(startHour, startMin, endHour, endMin, targetHour, targetMin);
+    return isWithinTimeRange(startTime, endTime, targetTime);
 }
 
 // print line based on if they found each other or not
 void announceInformation(boolean didFindEachOther) {
-    if (didFindEachOther) {
-        System.out.println("Encontram-se");
-    } else {
-        System.out.println("Desencontram-se");
-    }
+    final String MSG = getMessage(didFindEachOther);
+    System.out.println(MSG);
 }
 
 // main method
