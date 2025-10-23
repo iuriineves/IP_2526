@@ -103,8 +103,7 @@ void handleOpponentMovement(int carID) {
         if (track[carPosition] == BOOST && carSpeed < maxSpeed) modifier = DEFAULT_SPEED;
         else if (track[carPosition] == OIL && carSpeed > 0) modifier = -DEFAULT_SPEED;
 
-        i++;
-    } while(i < OPPONENT_VISION && modifier < 1);
+    } while(i++ < OPPONENT_VISION && modifier < DEFAULT_SPEED);
     accelerate(carID, modifier);
 }
 
@@ -238,7 +237,7 @@ void readCommand(Scanner in) {
         }
         case SHOW_CMD -> System.out.printf(SHOW_TEMPLATE, getCharArrayAsString(getTrackWithPlayers()), getRaceStatus());
         case STATUS_CMD -> {
-            char carName = in.next().toCharArray()[0];
+            char carName = in.next().charAt(0);
             printCarStatus(carName);
         }
         case QUIT_CMD -> quitCommand();
@@ -255,12 +254,7 @@ void readCommand(Scanner in) {
  * @return a string containing every character
  */
 String getCharArrayAsString(char[] charArray) {
-    String string = "";
-    for (int c = 0; c < track.length; c++) {
-        string += charArray[c];
-    }
-
-    return string;
+    return new String(charArray);
 }
 
 /**
@@ -350,5 +344,5 @@ void main() {
     do {
         readCommand(input);
     } while (running);
-
+    input.close();
 }
