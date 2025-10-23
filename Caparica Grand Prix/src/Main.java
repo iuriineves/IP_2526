@@ -33,8 +33,7 @@ final int OPPONENT_VISION = 3;
 final char NO_WINNER = ' ';
 
 // cars data
-char[] carsNames;
-char[] possibleCarNames = "Pabcdefghi".toCharArray();
+char[] carsNames = "Pabcdefghi".toCharArray();
 int[] carsPositions;
 int[] lastCarsPositions;
 int[] carsSpeeds;
@@ -74,14 +73,12 @@ void init(char[] initTrack, int raceLapsInit, int maxSpeedInit, int numOpponents
  * Initializes the cars' data
  */
 void initCarsData() {
-    carsNames = new char[players];
     carsPositions = new int[players];
     lastCarsPositions = new int[players];
     carsSpeeds = new int[players];
     carsLaps = new int[players];
 
     for (int car = 0; car < players; car++) {
-       carsNames[car] = possibleCarNames[car];
        carsLaps[car] = -1;
        setCarPosition(car, getElementPosition(POLE, track) - car - 1);
        lastCarsPositions[car] = carsPositions[car];
@@ -187,7 +184,7 @@ void addCarSpeed(int carID, int speed) {
  */
 int getElementPosition(char character, char[] array) {
     int i = 0;
-    while (i < array.length && i != character) i++;
+    while (i < array.length && array[i] != character) i++;
     return i;
 }
 
@@ -214,7 +211,7 @@ char[] defineTrack(String trackStr) {
  */
 int getWrapAroundPosition(int position) {
     if (position >= track.length) position -= track.length;
-    if (position < 0) position += track.length;
+    else if (position < 0) position += track.length;
     return position;
 }
 
@@ -235,7 +232,9 @@ void readCommand(Scanner in) {
             hasYellowFlag = false;
             rounds++;
         }
-        case SHOW_CMD -> System.out.printf(SHOW_TEMPLATE, getCharArrayAsString(getTrackWithPlayers()), getRaceStatus());
+        case SHOW_CMD -> System.out.printf(SHOW_TEMPLATE,
+                getCharArrayAsString(getTrackWithPlayers()),
+                getRaceStatus());
         case STATUS_CMD -> {
             char carName = in.next().charAt(0);
             printCarStatus(carName);
@@ -264,8 +263,7 @@ String getCharArrayAsString(char[] charArray) {
  */
 char[] cloneCharArray(char[] array) {
     char[] clonedArray = new char[array.length];
-    for (int i = 0; i < array.length; i++)
-        clonedArray[i] = array[i];
+    for (int i = 0; i < array.length; i++) clonedArray[i] = array[i];
     return clonedArray;
 }
 
@@ -310,7 +308,10 @@ void printCarStatus(char carName) {
     if (carID == -1) {
         System.out.printf("Player %s does not exist!\n", carName);
     } else {
-        if (winner != carName) System.out.printf(CAR_STATUS_TEMPLATE, carName, carsPositions[carID], Math.max(0, carsLaps[carID]));
+        if (winner != carName) System.out.printf(CAR_STATUS_TEMPLATE,
+                carName,
+                carsPositions[carID],
+                Math.max(0, carsLaps[carID]));
         else System.out.printf(RACE_ENDED_TEMPLATE, winner);
     }
 
@@ -338,7 +339,12 @@ void quitCommand() {
 
 void main() {
     Scanner input = new Scanner(System.in);
-    init(defineTrack(input.nextLine()), input.nextInt(), input.nextInt(), input.nextInt());
+    init(
+            defineTrack(input.nextLine()), // track
+            input.nextInt(),               // laps
+            input.nextInt(),               // max speed
+            input.nextInt()                // number of opponents
+    );
     input.nextLine();
 
     do {
