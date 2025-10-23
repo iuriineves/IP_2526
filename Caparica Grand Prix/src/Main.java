@@ -183,12 +183,12 @@ void addCarSpeed(int carID, int speed) {
  * Retrieves the {@code character}'s position on the provided {@code array}
  * @param character element to look for
  * @param array array to inspect
- * @return index of {@code character} in {@code array} or {@code 0} if none is found
+ * @return index of {@code character} in {@code array}
  */
 int getElementPosition(char character, char[] array) {
-    for (int element = 0; element < array.length; element++)
-        if (array[element] == character) return element;
-    return -1;
+    int i = 0;
+    while (i < array.length && i != character) i++;
+    return i;
 }
 
 /** Retrieves the race status
