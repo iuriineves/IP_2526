@@ -99,8 +99,7 @@ void handleOpponentMovement(int carID) {
         carPosition = getWrapAroundPosition(carPosition + DEFAULT_SPEED);
         if (track[carPosition] == BOOST && carSpeed < maxSpeed) modifier = DEFAULT_SPEED;
         else if (track[carPosition] == OIL && carSpeed > 0) modifier = -DEFAULT_SPEED;
-
-    } while(i++ < OPPONENT_VISION && modifier < DEFAULT_SPEED);
+    } while(++i < OPPONENT_VISION && modifier < DEFAULT_SPEED);
     accelerate(carID, modifier);
 }
 
@@ -134,7 +133,7 @@ void handleInteractions(int carID) {
  * @param carID car index on the data arrays (P is always 0, a is always 1, etc...)
  */
 void handleCollisions(int carID) {
-    for (int car = 0; car < carsNames.length; car++) {
+    for (int car = 0; car < players; car++) {
         if (carsPositions[carID] == carsPositions[car]
                 && carsNames[car] != carsNames[carID]) {
             int correctedPosition = getWrapAroundPosition(carsPositions[carID] - 1);
@@ -185,7 +184,8 @@ void addCarSpeed(int carID, int speed) {
 int getElementPosition(char character, char[] array) {
     int i = 0;
     while (i < array.length && array[i] != character) i++;
-    return i;
+    if (i == array.length) return -1;
+    else return i;
 }
 
 /** Retrieves the race status
@@ -226,7 +226,10 @@ void readCommand(Scanner in) {
             int accel = in.nextInt();
             accelCommand(accel);
             int i = 1;
-            while (i < players && winner == NO_WINNER) handleOpponentMovement(i++);
+            while (i < players && winner == NO_WINNER) {
+                handleOpponentMovement(i);
+                i++;
+            }
 
             if (winner == NO_WINNER) printCarStatus(carsNames[PLAYER_CAR_ID]);
             hasYellowFlag = false;
