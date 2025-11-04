@@ -184,7 +184,7 @@ void addCarSpeed(int carID, int speed) {
 int getElementPosition(char character, char[] array) {
     int i = 0;
     while (i < array.length && array[i] != character) i++;
-    if (i == array.length) return -1;
+    if (i >= array.length) return -1;
     else return i;
 }
 
@@ -264,7 +264,7 @@ String getCharArrayAsString(char[] charArray) {
  * @param array character array to clone
  * @return cloned character array
  */
-char[] cloneCharArray(char[] array) {
+char[] cloneCharArray (char[] array) {
     char[] clonedArray = new char[array.length];
     for (int i = 0; i < array.length; i++) clonedArray[i] = array[i];
     return clonedArray;
@@ -308,7 +308,7 @@ void accelerate(int carID, int acceleration) {
  */
 void printCarStatus(char carName) {
     int carID = getElementPosition(carName, carsNames);
-    if (carID == -1) {
+    if (carID == -1 || carID > players - 1) {
         System.out.printf("Player %s does not exist!\n", carName);
     } else {
         if (winner != carName) System.out.printf(CAR_STATUS_TEMPLATE,
